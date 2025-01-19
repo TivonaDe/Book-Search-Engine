@@ -19,6 +19,7 @@ export const getSingleUser = async (req: Request, res: Response) => {
 
 // create a user, sign a token, and send it back (to client/src/components/SignUpForm.js)
 export const createUser = async (req: Request, res: Response) => {
+ try{
   const user = await User.create(req.body);
 
   if (!user) {
@@ -26,6 +27,10 @@ export const createUser = async (req: Request, res: Response) => {
   }
   const token = signToken(user.username, user.password, user._id);
   return res.json({ token, user });
+ } 
+ catch (err) {
+  return res.status(500).json({message: 'Something is wrong!'})
+ }
 };
 
 // login a user, sign a token, and send it back (to client/src/components/LoginForm.js)
